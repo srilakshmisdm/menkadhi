@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You — Khadi & Co.</title>
+<style>
+/*
+ * _base.css — Global design tokens, element defaults, page shell, and tiny utilities.
+ * ALWAYS included in every page.
+ *
+ * Provides:
+ *   :root variables (light + dark), box-sizing, html/body,
+ *   element defaults (button, input, select, textarea, label, fieldset, legend,
+ *   a, hr, img, h1-h4, p, ul/ol/li, blockquote, table/th/td, details/summary,
+ *   pre/code), main / .notion-shell, utility classes, .notion-footer,
+ *   reduced-motion and responsive breakpoints for base elements.
+ */
+
+:root {
+	color-scheme: light dark;
+	--notion-bg: #ffffff;
+	--notion-bg-soft: #f9f9f8;
+	--notion-surface: #ffffff;
+	--notion-surface-hover: #f6f5f4;
+	--notion-text: #191918;
+	--notion-text-soft: rgba(0, 0, 0, 0.54);
+	--notion-text-faint: rgba(0, 0, 0, 0.3);
+	--notion-border: rgba(0, 0, 0, 0.1);
+	--notion-border-soft: rgba(0, 0, 0, 0.05);
+	--notion-shadow:
+		0px 0.7px 1.462px rgba(0, 0, 0, 0.015), 0px 3px 9px rgba(0, 0, 0, 0.03);
+	--notion-blue: #2783de;
+	--notion-orange: #d5803b;
+	--notion-red: #e56458;
+	--notion-blue-bg: #f3f9fd;
+	--notion-yellow-bg: #fcfaef;
+	--notion-orange-bg: #fcf7f4;
+	--notion-green-bg: #f6f9f7;
+	--notion-red-bg: #fdf6f6;
+	--notion-gray-bg: #f9f8f7;
+	--notion-radius: 8px;
+	--notion-page-width: 900px;
+	--notion-chart-1: #5e9fe8;
+	--notion-chart-2: #eac26b;
+	--notion-chart-3: #72bc8f;
+	--notion-chart-4: #bf8eda;
+	--notion-chart-5: #de9255;
+	--notion-chart-6: #df84a8;
+	--notion-chart-7: #4fb9c9;
+	--notion-chart-8: #e97366;
+	--diff-add: #47c1b6;
+	--diff-del: #f07070;
+	--pr-approved: #2b8a3e;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--notion-bg: #000000;
+		--notion-bg-soft: #191918;
+		--notion-surface: #191918;
+		--notion-surface-hover: #31302e;
+		--notion-text: #ffffff;
+		--notion-text-soft: rgba(255, 255, 255, 0.5);
+		--notion-text-faint: rgba(255, 255, 255, 0.3);
+		--notion-border: rgba(255, 255, 255, 0.2);
+		--notion-border-soft: rgba(255, 255, 255, 0.1);
+		--notion-shadow:
+			0px 0.7px 1.462px rgba(0, 0, 0, 0.06), 0px 3px 9px rgba(0, 0, 0, 0.12);
+		--notion-blue: #5e9fe8;
+		--notion-orange: #de9255;
+		--notion-red: #e97366;
+		--notion-blue-bg: rgba(41, 139, 253, 0.061);
+		--notion-yellow-bg: rgba(203, 145, 47, 0.08);
+		--notion-orange-bg: rgba(246, 126, 35, 0.08);
+		--notion-green-bg: rgba(42, 157, 118, 0.08);
+		--notion-red-bg: rgba(246, 73, 50, 0.08);
+		--notion-gray-bg: #31302e;
+		--diff-add: #5dd8cb;
+		--diff-del: #ff8a80;
+		--pr-approved: #69db7c;
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
+html {
+	scroll-behavior: smooth;
+}
+body {
+	margin: 0;
+	background: var(--notion-bg);
+	color: var(--notion-text);
+	font-family:
+		ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+		"Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+	font-size: 16px;
+	line-height: 1.5;
+	transition:
+		background 180ms ease,
+		color 180ms ease;
+}
+
+/* -- Base element defaults -------------------------------- */
+button,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 8px 16px;
+	font: inherit;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #ffffff;
+	background: var(--notion-blue);
+	border: 1px solid transparent;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 150ms;
+	white-space: nowrap;
+}
+button:hover,
+[type="button"]:hover,
+[type="submit"]:hover,
+[type="reset"]:hover {
+	background: color-mix(in srgb, var(--notion-blue) 82%, black);
+}
+button:focus-visible,
+[type="button"]:focus-visible,
+[type="submit"]:focus-visible,
+[type="reset"]:focus-visible {
+	outline: 2px solid var(--notion-blue);
+	outline-offset: 2px;
+}
+
+input,
+select,
+textarea {
+	font: inherit;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--notion-text);
+	background: var(--notion-surface);
+	border: 1px solid var(--notion-border);
+	border-radius: 8px;
+	padding: 8px 12px;
+	transition: border-color 150ms;
+}
+input:focus,
+select:focus,
+textarea:focus {
+	outline: none;
+	border-color: var(--notion-blue);
+	box-shadow: 0 0 0 2px rgba(9, 127, 232, 0.15);
+}
+input::placeholder,
+textarea::placeholder {
+	color: var(--notion-text-faint);
+}
+select {
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' fill='none' stroke='%23999' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	padding-right: 30px;
+}
+textarea {
+	resize: vertical;
+	min-height: 80px;
+}
+input[type="range"] {
+	border: none;
+	padding: 0;
+	background: transparent;
+	accent-color: var(--notion-blue);
+	height: 18px;
+	cursor: pointer;
+	box-shadow: none;
+}
+input[type="range"]:focus {
+	box-shadow: none;
+}
+input[type="checkbox"],
+input[type="radio"] {
+	width: 16px;
+	height: 16px;
+	accent-color: var(--notion-blue);
+	border: 1px solid var(--notion-border);
+	padding: 0;
+	cursor: pointer;
+}
+label {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--notion-text);
+	margin-bottom: 6px;
+}
+fieldset {
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	padding: 16px;
+	margin: 0;
+}
+legend {
+	font-weight: 600;
+	padding: 0 4px;
+}
+
+a {
+	color: var(--notion-text);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	text-decoration-color: var(--notion-border);
+}
+a:hover {
+	text-decoration-color: var(--notion-text);
+}
+
+hr {
+	height: 1px;
+	margin: 34px 0;
+	border: none;
+	background: var(--notion-border-soft);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	text-wrap: balance;
+}
+h1 {
+	margin: 0 0 14px;
+	font-size: clamp(42px, 7vw, 72px);
+	line-height: 1.1;
+	letter-spacing: -0.035em;
+	font-weight: 700;
+}
+h2 {
+	margin: 44px 0 10px;
+	font-size: 32px;
+	line-height: 1.25;
+	letter-spacing: -0.025em;
+}
+h3 {
+	margin: 0 0 6px;
+	font-size: 18px;
+	line-height: 1.556;
+	letter-spacing: -0.007em;
+}
+p {
+	margin: 0 0 10px;
+}
+
+ul,
+ol {
+	margin: 8px 0 16px;
+	padding-left: 24px;
+}
+li {
+	margin-bottom: 4px;
+}
+li::marker {
+	color: var(--notion-text-faint);
+}
+
+blockquote {
+	border-left: 3px solid var(--notion-text);
+	padding: 4px 0 4px 16px;
+	margin: 24px 0;
+}
+blockquote p {
+	font-size: 18px;
+	line-height: 1.5;
+	margin: 0;
+}
+
+table {
+	width: 100%;
+	margin: 14px 0;
+	border-collapse: separate;
+	border-spacing: 0;
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--notion-surface);
+	font-size: 14px;
+}
+th,
+td {
+	padding: 12px 14px;
+	vertical-align: top;
+	text-align: left;
+	border-right: 1px solid var(--notion-border-soft);
+	border-bottom: 1px solid var(--notion-border-soft);
+}
+th:last-child,
+td:last-child {
+	border-right: 0;
+}
+tr:last-child td {
+	border-bottom: 0;
+}
+th {
+	background: var(--notion-bg-soft);
+	color: var(--notion-text-soft);
+	font-weight: 600;
+}
+
+details {
+	margin: 16px 0;
+	border-radius: var(--notion-radius);
+}
+summary {
+	padding: 8px 10px;
+	border-radius: var(--notion-radius);
+	cursor: pointer;
+	font-weight: 600;
+}
+summary:hover {
+	background: var(--notion-surface-hover);
+}
+details p {
+	margin: 8px 10px 0 28px;
+	color: var(--notion-text-soft);
+}
+
+pre,
+code {
+	font-family: ui-monospace, "iA Writer Mono", Nitti, Menlo, Courier, monospace;
+}
+pre {
+	margin: 16px 0;
+	padding: 14px 16px;
+	overflow-x: auto;
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	background: var(--notion-gray-bg);
+	font-size: 13px;
+	line-height: 1.55;
+}
+code {
+	font-size: 0.9em;
+	padding: 2px 5px;
+	border-radius: 4px;
+	background: var(--notion-gray-bg);
+}
+pre code {
+	font-size: inherit;
+	padding: 0;
+	border-radius: 0;
+	background: none;
+}
+
+main {
+	max-width: var(--notion-page-width);
+	margin: 0 auto;
+	padding: 76px 24px 88px;
+}
+
+section {
+	margin-top: 44px;
+}
+section:first-child {
+	margin-top: 0;
+}
+
+/* -- Page shell ------------------------------------------- */
+.notion-shell {
+	max-width: var(--notion-page-width);
+	margin: 0 auto;
+	padding: 76px 24px 88px;
+}
+
+/* -- Tiny utilities --------------------------------------- */
+.notion-lede {
+	max-width: 720px;
+	margin: 0 0 24px;
+	color: var(--notion-text-soft);
+	font-size: 20px;
+}
+.notion-muted {
+	color: var(--notion-text-soft);
+}
+.notion-faint {
+	color: var(--notion-text-faint);
+}
+.notion-divider {
+	height: 1px;
+	margin: 34px 0;
+	background: var(--notion-border-soft);
+}
+.notion-eyebrow {
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.0078125rem;
+	text-transform: uppercase;
+	color: var(--notion-blue);
+}
+
+/* -- Footer ----------------------------------------------- */
+.notion-footer {
+	margin-top: 52px;
+	padding-top: 18px;
+	border-top: 1px solid var(--notion-border-soft);
+	color: var(--notion-text-faint);
+	font-size: 13px;
+}
+
+/* -- Accessibility & motion ------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* -- Responsive: 560px (base elements) -------------------- */
+@media (max-width: 560px) {
+	main,
+	.notion-shell {
+		padding-inline: 16px;
+	}
+	table {
+		display: block;
+		overflow-x: auto;
+	}
+}
+
+/*
+ * hero — Full-width hero section with title, subtitle, and optional eyebrow.
+ *
+ * HTML:
+ * <section class="notion-hero">
+ *   <span class="notion-eyebrow">Category</span>
+ *   <h1>Page Title</h1>
+ *   <p>A brief description that supports the title with additional context.</p>
+ *   <div class="notion-button-group">
+ *     <a class="notion-button" data-variant="primary" href="#">Get started</a>
+ *     <a class="notion-button" data-variant="secondary" href="#">Learn more</a>
+ *   </div>
+ * </section>
+ */
+
+.notion-hero {
+	padding: 48px 0 40px;
+	max-width: var(--notion-page-width);
+}
+.notion-hero h1 {
+	font-size: clamp(42px, 7vw, 72px);
+	font-weight: 700;
+	letter-spacing: -0.04em;
+	line-height: 1.05;
+	margin: 0;
+	text-wrap: balance;
+}
+.notion-hero p {
+	font-size: 20px;
+	line-height: 1.5;
+	color: var(--notion-text-soft);
+	margin: 16px 0 0;
+	max-width: 640px;
+}
+.notion-hero .notion-eyebrow {
+	margin-bottom: 12px;
+}
+
+/* -- Responsive: 820px ------------------------------------ */
+@media (max-width: 820px) {
+	.notion-hero {
+		padding: 32px 0 24px;
+	}
+	.notion-hero h1 {
+		font-size: clamp(32px, 8vw, 48px);
+	}
+}
+
+/*
+ * card-grid — Grid of clickable cards with icon, title, and description.
+ *
+ * HTML:
+ * <section class="notion-card-grid">
+ *   <article class="notion-card">
+ *     <div class="notion-card-icon">%</div>
+ *     <h3>Card</h3>
+ *     <p>Card text.</p>
+ *   </article>
+ * </section>
+ */
+
+.notion-card-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+	margin: 20px 0 6px;
+}
+.notion-card {
+	padding: 16px;
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	background: var(--notion-surface);
+	box-shadow: var(--notion-shadow);
+	transition:
+		transform 140ms ease,
+		background 140ms ease,
+		border-color 140ms ease;
+}
+.notion-card:hover {
+	transform: translateY(-1px);
+	background: var(--notion-surface-hover);
+	border-color: var(--notion-border);
+}
+.notion-card-icon {
+	width: 34px;
+	height: 34px;
+	display: grid;
+	place-items: center;
+	margin-bottom: 12px;
+	border-radius: 8px;
+	background: var(--notion-gray-bg);
+	font-size: 20px;
+}
+.notion-card p {
+	color: var(--notion-text-soft);
+}
+
+/* -- Responsive: 820px ------------------------------------ */
+@media (max-width: 820px) {
+	.notion-card-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/*
+ * callout — Highlighted info box with icon and text.
+ * Options: data-tone="blue" | "green" | "orange" | "red" (default: yellow)
+ *
+ * HTML:
+ * <div class="notion-callout" data-tone="blue">
+ *   <div>💡</div>
+ *   <div><strong>Note</strong><p>Helpful context.</p></div>
+ * </div>
+ */
+
+.notion-callout {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 14px;
+	margin: 18px 0;
+	padding: 16px 18px;
+	border-radius: var(--notion-radius);
+	background: var(--notion-yellow-bg);
+	box-shadow: inset 0 0 0 1px var(--notion-border-soft);
+}
+.notion-callout[data-tone="blue"] {
+	background: var(--notion-blue-bg);
+}
+.notion-callout[data-tone="green"] {
+	background: var(--notion-green-bg);
+}
+.notion-callout[data-tone="orange"] {
+	background: var(--notion-orange-bg);
+}
+.notion-callout[data-tone="red"] {
+	background: var(--notion-red-bg);
+}
+.notion-callout strong {
+	display: block;
+	margin-bottom: 3px;
+}
+.notion-callout p {
+	margin: 0;
+	color: var(--notion-text-soft);
+}
+
+/*
+ * button — Styled link/button with variant and size options.
+ * Options: data-variant="primary"|"secondary"|"tertiary"
+ *          data-size="small"|"large"
+ *
+ * HTML:
+ * <a class="notion-button" data-variant="primary" href="#">Primary</a>
+ */
+
+.notion-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 8px 16px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.2;
+	border-radius: 8px;
+	border: 1px solid transparent;
+	cursor: pointer;
+	transition:
+		background 150ms,
+		box-shadow 150ms,
+		border-color 150ms;
+	text-decoration: none;
+	font-family: inherit;
+	white-space: nowrap;
+}
+.notion-button:focus-visible {
+	outline: 2px solid var(--notion-blue);
+	outline-offset: 2px;
+}
+/* Primary */
+.notion-button[data-variant="primary"],
+.notion-button:not([data-variant]) {
+	background: var(--notion-blue);
+	color: #ffffff;
+	border-color: transparent;
+}
+.notion-button[data-variant="primary"]:hover,
+.notion-button:not([data-variant]):hover {
+	background: color-mix(in srgb, var(--notion-blue) 82%, black);
+}
+/* Secondary */
+.notion-button[data-variant="secondary"] {
+	background: var(--notion-blue-bg);
+	color: var(--notion-blue);
+	border-color: transparent;
+}
+.notion-button[data-variant="secondary"]:hover {
+	background: color-mix(in srgb, var(--notion-blue-bg) 70%, var(--notion-blue));
+}
+/* Tertiary */
+.notion-button[data-variant="tertiary"] {
+	background: transparent;
+	color: var(--notion-text);
+	border-color: transparent;
+}
+.notion-button[data-variant="tertiary"]:hover {
+	background: var(--notion-surface-hover);
+}
+/* Small modifier */
+.notion-button[data-size="small"] {
+	padding: 4px 12px;
+	font-size: 12px;
+}
+/* Large modifier */
+.notion-button[data-size="large"] {
+	padding: 12px 24px;
+	font-size: 16px;
+}
+.notion-button-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 24px;
+}
+
+/* -- Responsive: 820px ------------------------------------ */
+@media (max-width: 820px) {
+	.notion-button-group {
+		flex-direction: column;
+	}
+	.notion-button-group .notion-button {
+		width: 100%;
+	}
+}
+
+/*
+ * stat-grid — Grid of stat cards with label, big number, caption, and trend.
+ *
+ * HTML:
+ * <section class="notion-stat-grid">
+ *   <div class="notion-stat">
+ *     <p class="notion-stat-label">Metric</p>
+ *     <p class="notion-stat-value">42%</p>
+ *     <p class="notion-stat-caption">Short explanation.</p>
+ *     <span class="notion-stat-trend">&#x2197; trend</span>
+ *   </div>
+ * </section>
+ */
+
+.notion-stat-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+	margin: 20px 0 6px;
+}
+.notion-stat {
+	padding: 16px;
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	background: var(--notion-surface);
+	box-shadow: var(--notion-shadow);
+}
+.notion-stat-label {
+	margin: 0 0 6px;
+	color: var(--notion-text-soft);
+	font-size: 13px;
+	font-weight: 600;
+}
+.notion-stat-value {
+	margin: 0;
+	font-size: 32px;
+	line-height: 1.05;
+	letter-spacing: -0.04em;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+.notion-stat-caption {
+	margin: 8px 0 0;
+	color: var(--notion-text-soft);
+	font-size: 13px;
+}
+.notion-stat-trend {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-top: 10px;
+	padding: 3px 7px;
+	border-radius: 999px;
+	background: var(--notion-blue-bg);
+	color: var(--notion-blue);
+	font-size: 12px;
+	font-weight: 650;
+}
+
+/* -- Responsive: 1080px ----------------------------------- */
+@media (max-width: 1080px) {
+	.notion-stat-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* -- Responsive: 820px ------------------------------------ */
+@media (max-width: 820px) {
+	.notion-stat-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ── Khadi brand overrides ─────────────────────── */
+:root {
+	--notion-blue: #7a5a2e;            /* earthy brown accent */
+	--notion-blue-bg: #f4ece0;
+	--notion-bg: #fbf8f3;
+	--notion-bg-soft: #f4ece0;
+	--notion-surface: #ffffff;
+	--notion-text: #2c2620;
+	--notion-page-width: 1080px;
+	font-synthesis: none;
+}
+body { color-scheme: light; }
+
+/* Sticky top nav */
+.kh-nav {
+	position: sticky; top: 0; z-index: 50;
+	display: flex; align-items: center; justify-content: space-between;
+	padding: 14px 32px;
+	background: rgba(251,248,243,0.85);
+	backdrop-filter: saturate(140%) blur(10px);
+	border-bottom: 1px solid var(--notion-border-soft);
+}
+.kh-brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px; letter-spacing:-0.02em; }
+.kh-brand .kh-logo { width:34px; height:34px; border-radius:9px; background:var(--notion-blue); color:#fff; display:grid; place-items:center; font-size:18px; }
+.kh-nav-links { display:flex; gap:24px; }
+.kh-nav-links a { text-decoration:none; color:var(--notion-text-soft); font-weight:600; font-size:14px; }
+.kh-nav-links a:hover { color:var(--notion-text); }
+@media (max-width: 720px){ .kh-nav-links{ display:none; } }
+
+/* Full-bleed hero with image */
+.kh-hero {
+	position: relative;
+	min-height: 86vh;
+	display: grid;
+	align-items: center;
+	padding: 80px 32px;
+	color: #fff;
+	background-size: cover;
+	background-position: center right;
+	isolation: isolate;
+}
+.kh-hero::before {
+	content:""; position:absolute; inset:0; z-index:-1;
+	background: linear-gradient(90deg, rgba(20,15,8,0.78) 0%, rgba(20,15,8,0.45) 45%, rgba(20,15,8,0.05) 100%);
+}
+.kh-hero-inner { max-width: 620px; margin-left: max(0px, calc((100% - var(--notion-page-width))/2)); }
+.kh-hero .kh-eyebrow { color:#f0d9b5; letter-spacing:0.18em; font-weight:700; text-transform:uppercase; font-size:13px; }
+.kh-hero h1 { color:#fff; font-size: clamp(40px, 6vw, 68px); line-height:1.04; margin:14px 0 18px; letter-spacing:-0.03em; }
+.kh-hero p { color: rgba(255,255,255,0.9); font-size: 19px; max-width: 520px; margin:0 0 28px; }
+
+/* Section wrapper */
+.kh-wrap { max-width: var(--notion-page-width); margin:0 auto; padding: 0 32px; }
+.kh-section { padding: 72px 0; }
+.kh-section h2 { text-align:center; font-size: clamp(28px,4vw,40px); margin:0 0 8px; }
+.kh-section .kh-sub { text-align:center; color:var(--notion-text-soft); font-size:18px; max-width:640px; margin:0 auto 40px; }
+.kh-eyebrow-center { display:block; text-align:center; color:var(--notion-blue); font-weight:700; letter-spacing:0.16em; text-transform:uppercase; font-size:13px; margin-bottom:10px; }
+
+/* Split feature block */
+.kh-split { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+.kh-split.reverse .kh-split-media { order:2; }
+.kh-split-media img { width:100%; border-radius:16px; box-shadow: var(--notion-shadow); aspect-ratio: 16/11; object-fit:cover; }
+.kh-split h3 { font-size:26px; margin:0 0 14px; letter-spacing:-0.02em; }
+.kh-split p { color:var(--notion-text-soft); font-size:16px; }
+.kh-split ul { padding-left:18px; }
+.kh-split li { color:var(--notion-text-soft); margin-bottom:8px; }
+@media (max-width: 820px){ .kh-split{ grid-template-columns:1fr; gap:24px; } .kh-split.reverse .kh-split-media{ order:0; } }
+
+/* Product gallery */
+.kh-gallery { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.kh-prod { background:var(--notion-surface); border:1px solid var(--notion-border-soft); border-radius:14px; overflow:hidden; box-shadow:var(--notion-shadow); transition:transform 160ms ease; }
+.kh-prod:hover { transform:translateY(-4px); }
+.kh-prod img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:0; }
+.kh-prod-body { padding:16px 18px; }
+.kh-prod-body h4 { margin:0 0 4px; font-size:17px; }
+.kh-prod-body .kh-price { color:var(--notion-blue); font-weight:700; }
+.kh-prod-body p { color:var(--notion-text-soft); font-size:14px; margin:6px 0 0; }
+@media (max-width: 820px){ .kh-gallery{ grid-template-columns:1fr 1fr; } }
+@media (max-width: 520px){ .kh-gallery{ grid-template-columns:1fr; } }
+
+/* Stats band */
+.kh-band { background:var(--notion-blue); color:#fff; }
+.kh-band .kh-stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center; }
+.kh-band .kh-stat-num { font-size:40px; font-weight:800; letter-spacing:-0.03em; }
+.kh-band .kh-stat-lbl { color:rgba(255,255,255,0.85); font-size:14px; margin-top:4px; }
+@media (max-width: 620px){ .kh-band .kh-stat-row{ grid-template-columns:1fr 1fr; gap:32px 24px; } }
+
+/* Lead form */
+.kh-lead { background: var(--notion-bg-soft); }
+.kh-lead-grid { display:grid; grid-template-columns: 1.05fr 0.95fr; gap:48px; align-items:center; }
+.kh-lead-media img { width:100%; border-radius:16px; box-shadow:var(--notion-shadow); aspect-ratio:1/1; object-fit:cover; }
+.kh-form-card { background:var(--notion-surface); border:1px solid var(--notion-border-soft); border-radius:18px; padding:34px; box-shadow: 0 12px 40px rgba(60,40,15,0.10); }
+.kh-form-card h2 { text-align:left; margin:0 0 6px; font-size:28px; }
+.kh-form-card .kh-sub { text-align:left; margin:0 0 22px; font-size:15px; }
+.kh-field { margin-bottom:16px; }
+.kh-field label { font-size:13px; }
+.kh-field input, .kh-field select, .kh-field textarea { width:100%; }
+.kh-form-card .notion-button { width:100%; margin-top:6px; }
+.kh-consent { font-size:12px; color:var(--notion-text-faint); margin-top:14px; text-align:center; }
+@media (max-width: 820px){ .kh-lead-grid{ grid-template-columns:1fr; gap:28px; } .kh-lead-media{ display:none; } }
+
+/* Footer */
+.kh-footer { background:#1f1a13; color:rgba(255,255,255,0.7); padding:48px 32px; text-align:center; font-size:14px; }
+.kh-footer .kh-brand { justify-content:center; color:#fff; margin-bottom:10px; }
+
+/* Thank you page */
+.kh-thanks { min-height:100vh; display:grid; place-items:center; text-align:center; padding:40px 24px;
+	background: radial-gradient(circle at 50% 0%, #f4ece0, var(--notion-bg)); }
+.kh-thanks-inner { max-width:560px; }
+.kh-check { width:96px; height:96px; margin:0 auto 24px; border-radius:50%; background:var(--notion-blue); color:#fff; display:grid; place-items:center; font-size:48px; box-shadow:0 12px 36px rgba(122,90,46,0.35); }
+.kh-thanks h1 { font-size: clamp(34px,6vw,52px); margin:0 0 14px; }
+.kh-thanks p { color:var(--notion-text-soft); font-size:18px; margin:0 auto 28px; }
+
+
+</style>
+</head>
+<body>
+<div class="kh-thanks">
+	<div class="kh-thanks-inner">
+		<div class="kh-check">✓</div>
+		<span class="kh-eyebrow-center">Khadi &amp; Co.</span>
+		<h1>Thank You!</h1>
+		<p id="thanksMsg">Your details are in. Our stylist will email you the new collection lookbook along with your exclusive <strong>15% launch discount</strong> very soon.</p>
+		<a class="notion-button" data-variant="primary" data-size="large" href="index.html">← Back to Home</a>
+	</div>
+</div>
+<script>
+	try {
+		var lead = JSON.parse(localStorage.getItem('khadiLead') || '{}');
+		if (lead && lead.name) {
+			var first = String(lead.name).trim().split(' ')[0];
+			document.querySelector('.kh-thanks-inner h1').textContent = 'Thank You, ' + first + '!';
+		}
+	} catch (err) {}
+</script>
+</body>
+</html>
